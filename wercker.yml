@@ -12,19 +12,20 @@ build:
         rm -rf /usr/share/nginx/html
         cp -r website /usr/share/nginx/html
     - internal/docker-push:
-        username: $DOCKER_USER
+        username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
-        repository: wcr.io/kwanwan/mfrontpage
-        tag: $WERCKER_GIT_COMMIT
-        ports: 80
+        repository: $DOCKER_REPO
+        registery: $DOCKER_REGISTRY
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        ports: $PORTS
         cmd: "nginx -g 'daemon off';"
        
 functional-test:
   box: 
-    id: wcr.io/kwanwan/mfrontpage
-    username: $DOCKER_USER
+    id: $DOCKER_REPO
+    username: $DOCKER_USERNAME
     password: $DOCKER_PASSWORD
-    tag: $WERCKER_GIT_COMMIT
+    tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
   steps:
     - script: 
       name: test
@@ -62,7 +63,7 @@ deploy:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create secret docker-registry wrelease --docker-server=wcr.io --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$NS
+        command: create secret docker-registry wrelease --docker-server=$DOCKER_REGISTERY --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$NS
     - kubectl:
         name: apply deplyoment
         server: $KUBERNETES_MASTER

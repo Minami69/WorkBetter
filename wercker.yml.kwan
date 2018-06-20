@@ -1,0 +1,77 @@
+box:
+  id: alpine:3.2
+build:
+  steps:
+    - script:
+      name: download
+      code: |
+        apk add --update nginx && rm -rf /var/cache/apk/*
+        mkdir -p /tmp/nginx/client-body
+        cp nginx/nginx.conf /etc/nginx/nginx.conf
+        cp nginx/default.conf /etc/nginx/conf.d/default.conf
+        rm -rf /usr/share/nginx/html
+        cp -r website /usr/share/nginx/html
+    - internal/docker-push:
+        username: $DOCKER_USER
+        password: $DOCKER_PASSWORD
+        repository: wcr.io/kwanwan/mfrontpage
+        tag: $WERCKER_GIT_COMMIT
+        ports: 80
+        cmd: "nginx -g 'daemon off';"
+       
+functional-test:
+  box: 
+    id: wcr.io/kwanwan/mfrontpage
+    username: $DOCKER_USER
+    password: $DOCKER_PASSWORD
+    tag: $WERCKER_GIT_COMMIT
+  steps:
+    - script: 
+      name: test
+      code: |
+        nginx
+        result=`wget -q -O - localhost | sed -n -e 's!.*<title>\(.*\)</title>.*!\1!p'`
+        if [ "$result" == "Work Better" ]; then
+            echo "Passed"
+        else
+            echo "Failed"
+            exit 1;
+        fi
+        
+deploy:
+  box:
+    id: alpine
+    cmd: /bin/sh
+  steps:
+    - bash-template
+
+    - kubectl:
+        name: apply namespace    
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: apply -f ./ns.yml
+    - kubectl:
+        name: delete OCR secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete secret wrelease --namespace=$NS --ignore-not-found=true
+    - kubectl:
+        name: create OCR secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wrelease --docker-server=wcr.io --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$NS
+    - kubectl:
+        name: apply deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: apply -f ./mfrontpage-deploy.yml --namespace=$NS
+    - kubectl:
+        name: apply service
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: apply -f ./mfrontpage-service.yml --namespace=$NS

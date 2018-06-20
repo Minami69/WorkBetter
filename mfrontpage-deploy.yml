@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: frontpage
-        image: wcr.io/kwanwan/mfrontpage:$WERCKER_GIT_COMMIT
+        image: $DOCKER_REPO:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         ports:
         - containerPort: 80
         resources:

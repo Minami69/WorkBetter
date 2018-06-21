@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: frontpage
-        image: https://registry.hub.docker.com/V2/eminami69/mfrontpage:latest
+        image: https://registry.hub.docker.com/eminami69/mfrontpage:latest
         ports:
         - containerPort: 80
         resources:

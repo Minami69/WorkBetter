@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: frontpage
-        image: https://index.docker.io/v1:latest
+        image: eminani69/mfrontpage:latest
         ports:
         - containerPort: 80
         resources:

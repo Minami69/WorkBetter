@@ -64,7 +64,7 @@ deploy:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create secret docker-registry wrelease --docker-server=registry.hub.docker.com --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-email=$DOCKER_EMAIL --namespace=$NS
+        command: create secret docker-registry wrelease --docker-server=registry.hub.docker.com/V2 --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-email=$DOCKER_EMAIL --namespace=$NS
     - kubectl:
         name: apply deplyoment
         server: $KUBERNETES_MASTER

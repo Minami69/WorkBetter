@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: frontpage
-        image: index.docker.io/v1/eminami69/mfrontpage:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        image: index.docker.io/eminami69/mfrontpage:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         ports:
         - containerPort: 80
         resources:

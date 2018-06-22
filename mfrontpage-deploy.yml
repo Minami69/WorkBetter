@@ -8,7 +8,7 @@ spec:
     metadata:
       labels:
         app: frontpage
-        commit: ${WERCKER_GIT_COMMIT}
+        commit: '${WERCKER_GIT_COMMIT}'
     spec:
       containers:
       - name: frontpage

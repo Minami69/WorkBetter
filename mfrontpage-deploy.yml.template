@@ -2,12 +2,15 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: frontpage
+  labels:
+    commit: ${WERCKER_GIT_COMMIT}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: frontpage
+        commit: ${WERCKER_GIT_COMMIT}
     spec:
       containers:
       - name: frontpage

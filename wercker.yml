@@ -26,7 +26,7 @@ functional-test:
     id: $DOCKER_REPO
     username: $DOCKER_USERNAME
     password: $DOCKER_PASSWORD
-    tag: leatest
+    tag: latest
   steps:
     - script: 
       name: test

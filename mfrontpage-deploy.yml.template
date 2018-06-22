@@ -16,7 +16,7 @@ spec:
     - name: frontpage
       image: eminami69/mfrontpage:${WERCKER_GIT_COMMIT}
       ports:
-     - containerPort: 80
+      - containerPort: 80
      resources:
       requests:
        memory: 500Mi

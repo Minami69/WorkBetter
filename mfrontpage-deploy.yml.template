@@ -1,1 +1,29 @@
-
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontpage
+  labels:
+    commit: ${WERCKER_GIT_COMMIT}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontpage
+        commit: ${WERCKER_GIT_COMMIT}
+    spec:
+      containers:
+      - name: frontpage
+        image:  eminami69/mfrontpage:${WERCKER_GIT_COMMIT}
+        ports:
+        - containerPort: 80
+        resources:
+          requests: 
+            memory: 500Mi
+            cpu: 0.5
+          limits:
+            memory: 500Mi
+            cpu: 0.5
+        imagePullPolicy:  Always
+      imagePullSecrets:
+      - name: wrelease

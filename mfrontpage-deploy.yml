@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: frontpage
-        image: docker.io/eminami69/mfrontpage:'${WERCKER_GIT_COMMIT}'
+        image: docker.io/eminami69/mfrontpage:latest
         ports:
         - containerPort: 80
         resources:

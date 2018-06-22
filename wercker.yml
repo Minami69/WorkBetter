@@ -16,7 +16,7 @@ build:
         password: $DOCKER_PASSWORD
         repository: $DOCKER_REPO
         registry: $DOCKER_REGISTRY
-        tag: latest
+        tag: $WERCKER_GIT_COMMIT
         ports: $PORT
         env: PORT=$PORT
         cmd: "nginx -g 'daemon off';"

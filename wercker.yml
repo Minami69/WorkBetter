@@ -16,7 +16,7 @@ build:
         password: $DOCKER_PASSWORD
         repository: $DOCKER_REPO
         registry: $DOCKER_REGISTRY
-        tag: $WERCKER_GIT_COMMIT
+        tag: latest
         ports: $PORT
         env: PORT=$PORT
         cmd: "nginx -g 'daemon off';"
@@ -26,7 +26,7 @@ functional-test:
     id: $DOCKER_REPO
     username: $DOCKER_USERNAME
     password: $DOCKER_PASSWORD
-    tag: $WERCKER_GIT_COMMIT
+    tag: leatest
   steps:
     - script: 
       name: test

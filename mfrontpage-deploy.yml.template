@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: frontpage
+        app:  frontpage
         commit: ${WERCKER_GIT_COMMIT}
     spec:
       containers:
